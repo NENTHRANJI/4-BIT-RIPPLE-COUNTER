@@ -25,16 +25,84 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 **Procedure**
 
 /* write all the steps invloved */
+1.Increment count on each positive edge of the clock.
 
+2.Reset count to zero when it reaches 15.
+
+3.Generate clock signal (clk).
+
+4.Instantiate the RippleCounter module.
+
+5.Conduct functional testing by displaying the count at each clock cycle for 16 cycles.
 **PROGRAM**
 
 /* Program for 4 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.
+```module exp12(
+  input wire clk,  // Clock input
+  output reg [3:0] count // 4-bit counter output
+);
 
- Developed by: RegisterNumber:
+// Counter logic
+always @(posedge clk) begin
+  if (count == 4'b1111) // Reset when count reaches 15
+      count <= 4'b0000;
+  else
+      count <= count + 1; // Increment count
+end
+
+endmodule
+
+// Testbench
+module RippleCounter_tb;
+
+// Inputs
+reg clk;
+
+// Outputs
+wire [3:0] count;
+
+// Instantiate the counter
+RippleCounter uut(
+  .clk(clk),
+  .count(count)
+);
+
+// Clock generation
+initial begin
+  clk = 0;
+  forever #5 clk = ~clk; // Toggle clock every 5 time units
+end
+
+// Stimulus
+initial begin
+  // Wait for a few clock cycles
+  #10;
+  
+  // Display header
+  $display("Time | Count");
+  $display("-----------------");
+  
+  // Functional table testing
+  // Increment count 16 times and display the count
+  repeat (16) begin
+      #5; // Wait for one clock cycle
+      $display("%4d | %b", $time, count);
+  end
+  
+  // End simulation
+  $finish;
+end
+
+endmodule
+```
+ Developed by:NENTHRANJI S RegisterNumber:212224040216
 */
 
 **RTL LOGIC FOR 4 Bit Ripple Counter**
+![exp12](https://github.com/user-attachments/assets/05626884-941a-46e9-9f13-df24a212a05d)
 
 **TIMING DIGRAMS FOR 4 Bit Ripple Counter**
+![Screenshot 2025-05-22 092728](https://github.com/user-attachments/assets/f2b35056-7a82-47e7-bcb3-0fdc1da5487d)
 
 **RESULTS**
+Thus the program and execution of 4 bit ripple counter has been executed succesfully.
